@@ -1,0 +1,1 @@
+(defparameter x 12)
