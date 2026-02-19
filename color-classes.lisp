@@ -1,5 +1,3 @@
-(defparameter x 12)
-
 (defstruct ta
   quickname
   firstname
@@ -14,9 +12,8 @@
      :firstname first
      :lastname last)))
 
-(defparameter rat
-  (with-open-file (f "config/tas")
+(defun load-tas (filepath)
+  (with-open-file (f filepath)
     (loop for line = (read-line f nil :eof)
 	  until (eq line :eof)
-	  collect (string-to-ta line))
-    (uiop:read-file-string f)))
+	  collect (string-to-ta line))))
