@@ -42,3 +42,20 @@
    :red
    :orange
    :blue))
+
+(defun repeat (n x)
+  (make-list n :initial-element x))
+
+(defun stretch-colors (colors len)
+  (let ((partition-length (ceiling len (length colors))))
+    (mapcan (lambda (c) (repeat partition-length c))
+	    colors)))
+
+(defparameter color-table
+  (mapcar #'cons
+	  students
+	  (stretch-colors colors (length students))))
+
+(defun color-query (color)
+  (remove-if-not (lambda (s) (eql (cdr s) color))
+		 color-table))
