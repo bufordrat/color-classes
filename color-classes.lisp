@@ -59,3 +59,16 @@
 (defun color-query (color)
   (remove-if-not (lambda (s) (eql (cdr s) color))
 		 color-table))
+
+(defun student-match (name student)
+  (string-equal name (person-quickname student)))
+
+(defun get-student (qname)
+  (find-if (lambda (s) (student-match qname s))
+	   students))
+
+(defun get-color (qname)
+  (find-if (lambda (entry)
+	     (if (student-match qname (car entry))
+		 (cddr entry)))
+	   color-table))
