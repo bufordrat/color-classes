@@ -66,8 +66,6 @@
   (find-if (lambda (s) (student-match qname s))
 	   students))
 
-
-
 (defun rotate-list (times lst)
   (flet ((rotate-once (lst)
 	   (append (last lst) (butlast lst))))
@@ -76,7 +74,8 @@
 	(rotate-once (rotate-list (- times 1) lst)))))
 
 (defun pair-up-tas (assignment tas colors)
-  (mapcar #'cons tas (rotate-list (- assignment 1) colors)))
+  (mapcar #'cons tas
+	  (rotate-list (- assignment 1) colors)))
 
 (defun color-to-ta (assignment color)
   (person-quickname
