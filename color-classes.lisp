@@ -47,22 +47,17 @@
    :orange
    :blue))
 
-(defun repeat (n x)
-  (make-list n :initial-element x))
-
 (defun stretch-colors (colors len)
-  (let ((partition-length (ceiling len (length colors))))
-    (mapcan (lambda (c) (repeat partition-length c))
-	    colors)))
+  (flet ((repeat (n x)
+	   (make-list n :initial-element x)))
+    (let ((partition-length (ceiling len (length colors))))
+      (mapcan (lambda (c) (repeat partition-length c))
+	      colors))))
 
 (defparameter color-table
   (mapcar #'cons
 	  students
 	  (stretch-colors colors (length students))))
-
-(defun color-query (color)
-  (remove-if-not (lambda (s) (eql (cdr s) color))
-		 color-table))
 
 (defun student-match (name student)
   (string-equal name (person-quickname student)))
@@ -71,10 +66,7 @@
   (find-if (lambda (s) (student-match qname s))
 	   students))
 
-(defun get-color (qname)
-  (cdr (find-if (lambda (entry)
-		  (student-match qname (car entry)))
-		color-table)))
+
 
 (defun rotate-list (times lst)
   (flet ((rotate-once (lst)
@@ -92,6 +84,12 @@
     (rassoc color (pair-up-tas assignment tas colors)))))
 
 (defun student-to-ta (assignment qname)
-  (let* ((color (get-color qname))
-	 (ta (color-to-ta assignment color)))
-    ta))
+  (flet ((get-color (qname)
+	   (cdr
+	    (find-if
+	     (lambda (entry)
+	       (student-match qname (car entry)))
+	     color-table))))
+    (let* ((color (get-color qname))
+	   (ta (color-to-ta assignment color)))
+      ta)))
