@@ -87,7 +87,9 @@
   (mapcar #'cons tas (rotate-list (- assignment 1) colors)))
 
 (defun color-to-ta (assignment color)
-  (person-quickname (car (rassoc color (pair-up-tas assignment tas colors)))))
+  (person-quickname
+   (car
+    (rassoc color (pair-up-tas assignment tas colors)))))
 
 (defun student-to-ta (assignment qname)
   (let* ((color (get-color qname))
