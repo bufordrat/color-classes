@@ -51,7 +51,8 @@
   (flet ((repeat (n x)
 	   (make-list n :initial-element x)))
     (let ((partition-length (ceiling len (length colors))))
-      (mapcan (lambda (c) (repeat partition-length c))
+      (mapcan (lambda (c)
+		(repeat partition-length c))
 	      colors))))
 
 (defparameter color-table
