@@ -76,13 +76,12 @@
 		  (student-match qname (car entry)))
 		color-table)))
 
-(defun rotate-once (lst)
-  (append (last lst) (butlast lst)))
-
 (defun rotate-list (times lst)
-  (if (eql times 0)
-      lst
-      (rotate-once (rotate-list (- times 1) lst))))
+  (flet ((rotate-once (lst)
+	   (append (last lst) (butlast lst))))
+    (if (eql times 0)
+	lst
+	(rotate-once (rotate-list (- times 1) lst)))))
 
 (defun pair-up-tas (assignment tas colors)
   (mapcar #'cons tas (rotate-list (- assignment 1) colors)))
