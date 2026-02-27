@@ -72,10 +72,9 @@
 	   students))
 
 (defun get-color (qname)
-  (find-if (lambda (entry)
-	     (if (student-match qname (car entry))
-		 (cddr entry)))
-	   color-table))
+  (cdr (find-if (lambda (entry)
+		  (student-match qname (car entry)))
+		color-table)))
 
 (defun rotate-once (lst)
   (append (last lst) (butlast lst)))
@@ -85,7 +84,13 @@
       lst
       (rotate-once (rotate-list (- times 1) lst))))
 
-(defun pair-up-tas (week tas colors)
-  (mapcar #'cons tas (rotate-list week colors)))
+(defun pair-up-tas (assignment tas colors)
+  (mapcar #'cons tas (rotate-list (- assignment 1) colors)))
 
+(defun color-to-ta (assignment color)
+  (person-quickname (car (rassoc color (pair-up-tas assignment tas colors)))))
 
+(defun student-to-ta (assignment qname)
+  (let* ((color (get-color qname))
+	 (ta (color-to-ta assignment color)))
+    ta))
