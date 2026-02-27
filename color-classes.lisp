@@ -1,3 +1,7 @@
+(defmacro const (name value &optional doc)
+  `(defconstant ,name (if (boundp ',name) (symbol-value ',name) ,value)
+     ,@(when doc (list doc))))
+
 (defstruct person
   quickname
   firstname
@@ -72,3 +76,16 @@
 	     (if (student-match qname (car entry))
 		 (cddr entry)))
 	   color-table))
+
+(defun rotate-once (lst)
+  (append (last lst) (butlast lst)))
+
+(defun rotate-list (times lst)
+  (if (eql times 0)
+      lst
+      (rotate-once (rotate-list (- times 1) lst))))
+
+(defun pair-up-tas (week tas colors)
+  (mapcar #'cons tas (rotate-list week colors)))
+
+
