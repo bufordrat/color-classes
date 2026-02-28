@@ -93,3 +93,13 @@
     (let* ((color (get-color qname))
 	   (ta (color-to-ta assignment color)))
       ta)))
+
+(defun get-rows (ts cs)
+  (flet ((each-row (row)
+	   (mapcar #'cons ts row)))
+    (let ((weeks
+	    (loop for i
+		  from 1 upto 9
+		  collect (funcall #'rotate-list i cs))))
+      (mapcar #'each-row weeks))))
+
