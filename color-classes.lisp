@@ -94,12 +94,22 @@
 	   (ta (color-to-ta assignment color)))
       ta)))
 
-(defun get-rows (ts cs)
+(defun get-rows-full (ts cs)
   (flet ((each-row (row)
 	   (mapcar #'cons ts row)))
     (let ((weeks
 	    (loop for i
 		  from 1 upto 9
-		  collect (funcall #'rotate-list i cs))))
+		  collect (rotate-list i cs))))
       (mapcar #'each-row weeks))))
 
+(defun get-rows (ts cs)
+  (let ((quicknames (mapcar #'person-quickname ts)))
+    (get-rows-full quicknames cs)))
+
+(defun create-columns (number-of-assignments colors)
+  (flet ((each-row (i)
+	   (cons i (rotate-list i colors))))
+    (loop for i
+	  from 1 upto number-of-assignments
+	  collect (each-row i))))
