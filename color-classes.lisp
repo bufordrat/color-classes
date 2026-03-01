@@ -107,7 +107,7 @@
   (let ((quicknames (mapcar #'person-quickname ts)))
     (get-rows-full quicknames cs)))
 
-(defun create-columns (number-of-assignments colors)
+(defun create-inner-columns (number-of-assignments colors)
   (flet ((each-row (i)
 	   (cons i (rotate-list i colors))))
     (loop for i
