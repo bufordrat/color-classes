@@ -41,6 +41,9 @@
 (defparameter students
   (load-people students-path))
 
+(defparameter color-codes
+  (list '(:red . ())))
+
 (defparameter colors
   (list
    :red
@@ -83,6 +86,16 @@
    (car
     (rassoc color (pair-up-tas assignment tas colors)))))
 
+(defun assignment-to-week (assignment)
+  (mapcar (lambda (x)
+	    (cons (person-quickname (car x)) (cdr x)))
+	  (pair-up-tas assignment tas colors)))
+
+(defun ta-to-color (assignment ta)
+  (let* ((week (assignment-to-week assignment))
+	 (pair (assoc ta week :test #'string-equal)))
+    (cdr pair)))
+
 (defun student-to-ta (assignment qname)
   (flet ((get-color (qname)
 	   (cdr
@@ -113,3 +126,32 @@
     (loop for i
 	  from 1 upto number-of-assignments
 	  collect (each-row i))))
+
+(defun color-to-string (color)
+  (let* ((color-string
+	   (string-downcase (string color))))
+    (if color
+	(concatenate 'string " style=\"color:" color-string ";\"")
+	"")))
+	 
+(defun tag (tagname &optional color)
+    (lambda (content)
+      (concatenate 'string
+		   "<" tagname (color-to-string color) ">"
+		   content
+		   "</" tagname ">")))
+
+(defun html (content)
+  (funcall (tag "html") content))
+
+(defun body (content)
+  (funcall (tag "body") content))
+
+(defun tr (content)
+  (funcall (tag "tr") content))
+
+(defun td (content &optional color)
+    (funcall (tag "td" color) content))
+
+(defun table (content)
+  (funcall (tag "tr") content))
