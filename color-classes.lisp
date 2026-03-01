@@ -112,7 +112,7 @@
 	   (mapcar #'cons ts row)))
     (let ((weeks
 	    (loop for i
-		  from 1 upto 9
+		  from 1 upto 8
 		  collect (rotate-list i cs))))
       (mapcar #'each-row weeks))))
 
