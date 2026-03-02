@@ -169,3 +169,10 @@
 
 (defun colors-to-html (colors)
   (html (body (table (columns-to-html-table (get-columns colors))))))
+
+(defun write-html-file (colors)
+  (with-open-file (str "test.html"
+		       :direction :output
+		       :if-exists :supersede
+		       :if-does-not-exist :create)
+    (format str (colors-to-html colors))))
