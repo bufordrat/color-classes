@@ -1,7 +1,3 @@
-(defmacro const (name value &optional doc)
-  `(defconstant ,name (if (boundp ',name) (symbol-value ',name) ,value)
-     ,@(when doc (list doc))))
-
 (defstruct person
   quickname
   firstname
