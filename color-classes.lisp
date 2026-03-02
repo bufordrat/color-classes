@@ -111,25 +111,16 @@
 	   (ta (color-to-ta assignment color)))
       ta)))
 
-(defun get-rows-full (ts cs)
-  (flet ((each-row (row)
-	   (mapcar #'cons ts row)))
-    (let ((weeks
-	    (loop for i
-		  from 1 upto 8
-		  collect (rotate-list i cs))))
-      (mapcar #'each-row weeks))))
+(defparameter first-assignment 1)
+(defparameter final-assignment 8)
 
-(defun get-rows (ts cs)
-  (let ((quicknames (mapcar #'person-quickname ts)))
-    (get-rows-full quicknames cs)))
+(defun get-columns (cs)
+  (loop for i
+	from (- first-assignment 1) upto (- final-assignment 1)
+	collect (rotate-list i cs)))
 
-(defun create-inner-columns (number-of-assignments colors)
-  (flet ((each-row (i)
-	   (cons i (rotate-list i colors))))
-    (loop for i
-	  from 1 upto number-of-assignments
-	  collect (each-row i))))
+(defun transpose (list-of-lists)
+  (apply #'mapcar #'list list-of-lists))
 
 (defun color-to-string (color)
   (let* ((row (cdr (assoc color color-codes)))
@@ -137,7 +128,8 @@
 	 (bg (second row)))
     (if color
 	(concatenate 'string
-		     " style=\"color:"
+		     " style=\"text-align:center;"
+		     "color:"
 		     fg
 		     ";background-color:"
 		     bg
@@ -164,4 +156,20 @@
     (funcall (tag "td" color) content))
 
 (defun table (content)
-  (funcall (tag "tr") content))
+  (funcall (tag "table") content))
+
+(defun concat (list-of-strings)
+  (apply #'concatenate 'string list-of-strings))
+
+(defun each-html-row (row)
+  (tr (apply #'concatenate 'string
+       (mapcar
+	(lambda (color) (td (string-downcase (string color)) color))
+	row))))
+
+(defun columns-to-html-table (columns)
+  (let ((rows (transpose columns)))
+    (apply #'concatenate 'string (mapcar #'each-html-row rows))))
+
+(defun colors-to-html (colors)
+  (html (body (table (columns-to-html-table (get-columns colors))))))
