@@ -76,7 +76,7 @@
 
 (defun rotate-list (times lst)
   (flet ((rotate-once (lst)
-	   (append (last lst) (butlast lst))))
+	   (append (cdr lst) (list (car lst)))))
     (if (eql times 0)
 	lst
 	(rotate-once (rotate-list (- times 1) lst)))))
