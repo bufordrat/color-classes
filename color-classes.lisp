@@ -42,7 +42,23 @@
   (load-people students-path))
 
 (defparameter color-codes
-  (list '(:red . ())))
+  '((:blue "#2a71e6" "#e8f4ff")
+    (:red "#a61c00" "#ffeded")))
+
+(defun byte-to-hex (byte)
+  (format nil "~(~2,'0X~)" byte))
+
+(defun rgb-to-string (rgb)
+  (let ((red (byte-to-hex (first rgb)))
+	(green (byte-to-hex (second rgb)))
+	(blue (byte-to-hex (third rgb))))
+    (concatenate 'string "#" red green blue)))
+
+(defun hex-strings (color)
+  (let ((foreground (cadr (assoc color color-codes)))
+	(background (caddr (assoc color color-codes))))
+    (cons (rgb-to-string foreground)
+	  (rgb-to-string background))))
 
 (defparameter colors
   (list
