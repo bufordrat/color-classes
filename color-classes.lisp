@@ -132,12 +132,18 @@
 	  collect (each-row i))))
 
 (defun color-to-string (color)
-  (let* ((color-string
-	   (string-downcase (string color))))
+  (let* ((row (cdr (assoc color color-codes)))
+	 (fg (first row))
+	 (bg (second row)))
     (if color
-	(concatenate 'string " style=\"color:" color-string ";\"")
+	(concatenate 'string
+		     " style=\"color:"
+		     fg
+		     ";background-color:"
+		     bg
+		     ";\"")
 	"")))
-	 
+
 (defun tag (tagname &optional color)
     (lambda (content)
       (concatenate 'string
