@@ -49,6 +49,19 @@
 (defparameter colors
   (mapcar #'car color-codes))
 
+(defun stretch-colors (colors len)
+  (flet ((repeat (n x)
+	   (make-list n :initial-element x)))
+    (let ((partition-length (ceiling len (length colors))))
+      (mapcan (lambda (c)
+		(repeat partition-length c))
+	      colors))))
+
+(defparameter color-table
+  (mapcar #'cons
+	  students
+	  (stretch-colors colors (length students))))
+
 (defun student-match (name student)
   (string-equal name (person-quickname student)))
 
