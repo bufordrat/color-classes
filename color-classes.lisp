@@ -1,3 +1,5 @@
+(require 'uiop)
+
 (defstruct person
   quickname
   firstname
@@ -171,3 +173,8 @@
 		       :if-exists :supersede
 		       :if-does-not-exist :create)
     (format str (colors-to-html colors))))
+
+(defun main ()
+  (let ((assignment (parse-integer (second *posix-argv*)))
+	(student (third *posix-argv*)))
+    (format t "~A~%" (student-to-ta assignment student))))
