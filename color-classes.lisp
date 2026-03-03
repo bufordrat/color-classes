@@ -4,17 +4,21 @@
   lastname)
 
 (defun process-line (line)
-  (mapcar (lambda (l)
-	    (string-trim " " l))
-	  (uiop:split-string line :separator ",")))
+  (mapcar (lambda (l) (string-trim " " l))
+	  (uiop:split-string
+	   line
+	   :separator ",")))
 
 (defun string-to-person (str)
-  (destructuring-bind (last first) 
-      (process-line str)
-    (make-person
-     :quickname first
-     :firstname first
-     :lastname last)))
+  (destructuring-bind (last first) (process-line str)
+    (flet ((shorten-firstname (firstname)
+	     (car (uiop:split-string
+		   firstname
+		   :separator " "))))
+      (make-person
+       :quickname (shorten-firstname first)
+       :firstname first
+       :lastname last))))
 
 (defun load-people (filepath)
   (with-open-file (f filepath)
@@ -45,30 +49,8 @@
 (defparameter colors
   (mapcar #'car color-codes))
 
-(defun hex-strings (color)
-  (let ((foreground (cadr (assoc color color-codes)))
-	(background (caddr (assoc color color-codes))))
-    (cons foreground background)))
-
-(defun stretch-colors (colors len)
-  (flet ((repeat (n x)
-	   (make-list n :initial-element x)))
-    (let ((partition-length (ceiling len (length colors))))
-      (mapcan (lambda (c)
-		(repeat partition-length c))
-	      colors))))
-
-(defparameter color-table
-  (mapcar #'cons
-	  students
-	  (stretch-colors colors (length students))))
-
 (defun student-match (name student)
   (string-equal name (person-quickname student)))
-
-(defun get-student (qname)
-  (find-if (lambda (s) (student-match qname s))
-	   students))
 
 (defun rotate-list (times lst)
   (flet ((rotate-once (lst)
