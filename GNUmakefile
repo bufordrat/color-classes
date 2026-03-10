@@ -1,5 +1,5 @@
 define SAVE
-(save-lisp-and-die "color-classes" :toplevel (function main) \
+(save-lisp-and-die "color-classes" :toplevel (function cc-lib:main) \
 :executable t :compression t :save-runtime-options t)
 endef
 

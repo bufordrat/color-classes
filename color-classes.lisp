@@ -1,3 +1,9 @@
+(defpackage :cc-lib
+  (:use :cl)
+  (:export :main))
+
+(in-package :cc-lib)
+
 (require 'uiop)
 
 (defstruct person
@@ -176,8 +182,8 @@
     (format str (colors-to-html colors))))
 
 (defun main ()
-  (let* ((assignment (parse-integer (second *posix-argv*)))
-	 (student (third *posix-argv*))
+  (let* ((assignment (parse-integer (second sb-ext:*posix-argv*)))
+	 (student (third sb-ext:*posix-argv*))
 	 (outputs (multiple-value-list
 		   (student-to-ta assignment student))))
     ;; (mapc #'write-line outputs)
