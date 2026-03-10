@@ -101,8 +101,9 @@
 	       (student-match qname (car entry)))
 	     color-table))))
     (let* ((color (get-color qname))
-	   (ta (color-to-ta assignment color)))
-      ta)))
+	   (ta (color-to-ta assignment color))
+	   (color-string (string color)))
+      (values ta color-string))))
 
 (defparameter first-assignment 1)
 (defparameter final-assignment 8)
@@ -130,11 +131,11 @@
 	"")))
 
 (defun tag (tagname &optional color)
-    (lambda (content)
-      (concatenate 'string
-		   "<" tagname (color-to-string color) ">"
-		   content
-		   "</" tagname ">")))
+  (lambda (content)
+    (concatenate 'string
+		 "<" tagname (color-to-string color) ">"
+		 content
+		 "</" tagname ">")))
 
 (defun html (content)
   (funcall (tag "html") content))
@@ -146,7 +147,7 @@
   (funcall (tag "tr") content))
 
 (defun td (content &optional color)
-    (funcall (tag "td" color) content))
+  (funcall (tag "td" color) content))
 
 (defun table (content)
   (funcall (tag "table") content))
@@ -156,9 +157,9 @@
 
 (defun each-html-row (row)
   (tr (apply #'concatenate 'string
-       (mapcar
-	(lambda (color) (td (string-downcase (string color)) color))
-	row))))
+	     (mapcar
+	      (lambda (color) (td (string-downcase (string color)) color))
+	      row))))
 
 (defun columns-to-html-table (columns)
   (let ((rows (transpose columns)))
@@ -175,6 +176,22 @@
     (format str (colors-to-html colors))))
 
 (defun main ()
-  (let ((assignment (parse-integer (second *posix-argv*)))
-	(student (third *posix-argv*)))
-    (format t "~A~%" (student-to-ta assignment student))))
+  (let* ((assignment (parse-integer (second *posix-argv*)))
+	 (student (third *posix-argv*))
+	 (outputs (multiple-value-list
+		   (student-to-ta assignment student))))
+    ;; (mapc #'write-line outputs)
+    (format t "~{~A~%~}" outputs)))
+
+;; 3 --student raj
+;;  : print :
+;;  Jyotsna
+;;  BLUE
+
+;; 7 --ta joytsna
+;;  : print :
+;;  BLUE
+
+;; 1 --color blue
+;;  : print :
+;;  Jonathan
