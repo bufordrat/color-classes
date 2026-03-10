@@ -1,8 +1,4 @@
-(defpackage :cc-lib
-  (:use :cl)
-  (:export :main))
-
-(in-package :cc-lib)
+(in-package :color-classes)
 
 (require 'uiop)
 
@@ -180,14 +176,6 @@
 		       :if-exists :supersede
 		       :if-does-not-exist :create)
     (format str (colors-to-html colors))))
-
-(defun main ()
-  (let* ((assignment (parse-integer (second sb-ext:*posix-argv*)))
-	 (student (third sb-ext:*posix-argv*))
-	 (outputs (multiple-value-list
-		   (student-to-ta assignment student))))
-    ;; (mapc #'write-line outputs)
-    (format t "~{~A~%~}" outputs)))
 
 ;; 3 --student raj
 ;;  : print :
