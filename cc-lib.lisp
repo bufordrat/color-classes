@@ -182,7 +182,7 @@
 ;;  Jyotsna
 ;;  BLUE
 
-;; 7 --ta joytsna
+;; 7 --ta jyotsna
 ;;  : print :
 ;;  BLUE
 

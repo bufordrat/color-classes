@@ -1,5 +1,5 @@
 (require :asdf)
-(format *error-output* "~&Working directory: ~A~%" (uiop/os:getcwd))
+;; (format *error-output* "~&Working directory: ~A~%" (uiop/os:getcwd))
 
 (load (merge-pathnames ".quicklisp/setup.lisp" (user-homedir-pathname)))
 (pushnew (uiop/os:getcwd) asdf:*central-registry*)
