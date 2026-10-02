@@ -1,7 +1,7 @@
 (require :asdf)
 (format *error-output* "~&Working directory: ~A~%" (uiop/os:getcwd))
 
-(load (merge-pathnames ".quicklisp/setup.lisp" (user-homedir-pathname)))
+(load (merge-pathnames "quicklisp/setup.lisp" (user-homedir-pathname)))
 (pushnew (uiop/os:getcwd) asdf:*central-registry*)
 
 (defun build (name)

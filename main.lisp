@@ -5,5 +5,4 @@
 	 (student (third sb-ext:*posix-argv*))
 	 (outputs (multiple-value-list
 		   (student-to-ta assignment student))))
-    ;; (mapc #'write-line outputs)
     (format t "~{~A~%~}" outputs)))

@@ -5,7 +5,8 @@
 (defstruct person
   quickname
   firstname
-  lastname)
+  lastname
+  roster)
 
 (defun process-line (line)
   (mapcar (lambda (l) (string-trim " " l))
@@ -22,7 +23,8 @@
       (make-person
        :quickname (shorten-firstname first)
        :firstname first
-       :lastname last))))
+       :lastname last
+       :roster str))))
 
 (defun load-people (filepath)
   (with-open-file (f filepath)
@@ -110,6 +112,8 @@
 (defparameter first-assignment 1)
 (defparameter final-assignment 8)
 
+;;;;;;;;;;;;;;;;;;; code for generating TA rotation HTML ;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun get-columns (cs)
   (loop for i
 	from (- first-assignment 1) upto (- final-assignment 1)
@@ -170,12 +174,30 @@
 (defun colors-to-html (colors)
   (html (body (table (columns-to-html-table (get-columns colors))))))
 
-(defun write-html-file (colors)
+(defun write-schedule-html-file (colors)
   (with-open-file (str "test.html"
 		       :direction :output
 		       :if-exists :supersede
 		       :if-does-not-exist :create)
     (format str (colors-to-html colors))))
+
+;;;;;;;;;;;;;;;;;; code for generating student roster HTML ;;;;;;;;;;;;;;;;;;;;;
+
+(defun students-to-roster-html (ss)
+  (html
+   (body
+    (table
+     (apply #'concatenate 'string
+	    (loop for s in ss
+		  collect (tr (td (person-roster s)
+				  (cdr (assoc s color-table))))))))))
+
+(defun write-roster-html-file (students)
+  (with-open-file (str "roster.html"
+		       :direction :output
+		       :if-exists :supersede
+		       :if-does-not-exist :create)
+		       (format str (students-to-roster-html students))))
 
 ;; 3 --student raj
 ;;  : print :
