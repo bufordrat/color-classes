@@ -16,5 +16,5 @@ $(EXE): $(FILES)
 # color-classes: color-classes.lisp
 # 	sbcl --noinform --disable-debugger --load color-classes.lisp --eval '$(SAVE)'
 
-# clean:
-# 	rm color-classes
+clean:
+	rm color-classes
